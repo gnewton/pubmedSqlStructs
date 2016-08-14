@@ -19,11 +19,11 @@ type Article struct {
 	KeywordsOwner   string
 	Language        string
 	MeshDescriptors []*MeshDescriptor
-	Month           string
+	Month           string `sql:"size:8`
 	OtherId         []OtherID
 	Title           string
 	Volume          string
-	Year            int
+	Year            int   `sql:"size:4`
 	DateRevised     int64 //YYYYMMDD 20140216
 }
 
@@ -36,39 +36,41 @@ type OtherID struct {
 type Journal struct {
 	ID              int `gorm:"primary_key"`
 	Articles        []Article
-	IsoAbbreviation string
-	Issn            string
+	IsoAbbreviation string `sql:"size:128`
+	Issn            string `sql:"size:10`
 	Title           string
 }
 
 type Author struct {
-	ID          int `gorm:"primary_key"`
-	LastName    string
-	FirstName   string
-	MiddleName  string
+	ID          int    `gorm:"primary_key"`
+	LastName    string `sql:"size:48`
+	FirstName   string `sql:"size:16`
+	MiddleName  string `sql:"size:16`
 	Affiliation string
 }
 
 type Keyword struct {
 	ID         int `gorm:"primary_key"`
 	MajorTopic bool
-	Name       string
+	Name       string `sql:"size:128`
 }
 
 type MeshDescriptor struct {
 	ID         int `gorm:"primary_key"`
 	Name       string
-	Type       string
+	Type       string `sql:"size:32`
 	MajorTopic bool
 	Qualifiers []*MeshQualifier
 	ArticleID  int64
+	UI         string
 }
 
 type MeshQualifier struct {
 	ID               int `gorm:"primary_key"`
 	MajorTopic       bool
-	Name             string
+	Name             string `sql:"size:128`
 	MeshDescriptorID int
+	UI               string
 }
 
 type Gene struct {
@@ -79,7 +81,7 @@ type Gene struct {
 type Chemical struct {
 	ID       int `gorm:"primary_key"`
 	Name     string
-	Registry string
+	Registry string `sql:"size:32`
 }
 
 type Citation struct {
