@@ -12,18 +12,19 @@ type Article struct {
 	Day             int
 	Genes           []Gene `gorm:"many2many:article_gene;"`
 	ID              int64  `gorm:"primary_key"` // PMID
-	Issue           string
+	Issue           string `sql:"size:32"`
 	Journal         *Journal
 	JournalID       sql.NullInt64
 	Keywords        []*Keyword `gorm:"many2many:article_keyword;"`
-	KeywordsOwner   string
-	Language        string
+	KeywordsOwner   string     `sql:"size:128"`
+	Language        string     `sql:"size:3"`
 	MeshDescriptors []*MeshDescriptor
-	Month           string `sql:"size:8`
+	Month           string `sql:"size:8"`
 	OtherId         []OtherID
 	Title           string
+	Version         int `sql:"size:2"`
 	Volume          string
-	Year            int   `sql:"size:4`
+	Year            int   `sql:"size:4"`
 	DateRevised     int64 //YYYYMMDD 20140216
 }
 
@@ -36,29 +37,29 @@ type OtherID struct {
 type Journal struct {
 	ID              int `gorm:"primary_key"`
 	Articles        []Article
-	IsoAbbreviation string `sql:"size:128`
-	Issn            string `sql:"size:10`
+	IsoAbbreviation string `sql:"size:128"`
+	Issn            string `sql:"size:10"`
 	Title           string
 }
 
 type Author struct {
 	ID          int    `gorm:"primary_key"`
-	LastName    string `sql:"size:48`
-	FirstName   string `sql:"size:16`
-	MiddleName  string `sql:"size:16`
+	LastName    string `sql:"size:48"`
+	FirstName   string `sql:"size:16"`
+	MiddleName  string `sql:"size:16"`
 	Affiliation string
 }
 
 type Keyword struct {
 	ID         int `gorm:"primary_key"`
 	MajorTopic bool
-	Name       string `sql:"size:128`
+	Name       string `sql:"size:128"`
 }
 
 type MeshDescriptor struct {
 	ID         int `gorm:"primary_key"`
 	Name       string
-	Type       string `sql:"size:32`
+	Type       string `sql:"size:32"`
 	MajorTopic bool
 	Qualifiers []*MeshQualifier
 	ArticleID  int64
@@ -68,7 +69,7 @@ type MeshDescriptor struct {
 type MeshQualifier struct {
 	ID               int `gorm:"primary_key"`
 	MajorTopic       bool
-	Name             string `sql:"size:128`
+	Name             string `sql:"size:128"`
 	MeshDescriptorID int
 	UI               string
 }
@@ -81,7 +82,7 @@ type Gene struct {
 type Chemical struct {
 	ID       int `gorm:"primary_key"`
 	Name     string
-	Registry string `sql:"size:32`
+	Registry string `sql:"size:32"`
 }
 
 type Citation struct {
