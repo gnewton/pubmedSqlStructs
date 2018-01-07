@@ -26,6 +26,18 @@ type Article struct {
 	Volume          string
 	Year            int   `sql:"size:4"`
 	DateRevised     int64 //YYYYMMDD 20140216
+	DataBanks       []*DataBank
+}
+
+type DataBank struct {
+	ID               int `gorm:"primary_key"`
+	Name             string
+	AccessionNumbers []*AccessionNumber
+}
+
+type AccessionNumber struct {
+	ID     int `gorm:"primary_key"`
+	Number string
 }
 
 type OtherID struct {
