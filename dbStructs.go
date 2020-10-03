@@ -6,12 +6,14 @@ import (
 
 type Article struct {
 	Abstract         string
+	ArticleIDs       []*ArticleID
 	Authors          []Author    `gorm:"many2many:article_author;"`
 	Chemicals        []*Chemical `gorm:"many2many:article_chemical;"`
 	Citations        []*Citation `gorm:"many2many:article_citation;"`
+	DataBanks        []*DataBank
+	DateRevised      int64 //YYYYMMDD 20140216
 	Day              int
-	Genes            []Gene `gorm:"many2many:article_gene;"`
-	ID               int64  `gorm:"primary_key"` // PMID
+	ID               int32  `gorm:"primary_key"` // PMID
 	Issue            string `sql:"size:32"`
 	Journal          *Journal
 	JournalID        sql.NullInt64
@@ -21,15 +23,12 @@ type Article struct {
 	MeshDescriptors  []*MeshDescriptor
 	Month            string `sql:"size:8"`
 	OtherId          []OtherID
+	PublicationTypes []*PublicationType `gorm:"many2many:article_publicationtype;"`
+	Retracted        bool
 	Title            string
 	Version          int `sql:"size:2"`
 	Volume           string
-	Year             int   `sql:"size:4"`
-	DateRevised      int64 //YYYYMMDD 20140216
-	DataBanks        []*DataBank
-	ArticleIDs       []*ArticleID
-	Retracted        bool
-	PublicationTypes []*PublicationType `gorm:"many2many:article_publicationtype;"`
+	Year             int `sql:"size:4"`
 }
 
 type PublicationType struct {
@@ -41,21 +40,21 @@ type PublicationType struct {
 type ArticleID struct {
 	OtherArticleID string `sql:"size:64"`
 	Type           string `sql:"size:12"`
-	ID             int64  `gorm:"primary_key"`
-	ArticleID      int64
+	ID             int32  `gorm:"primary_key"`
+	ArticleID      int32
 }
 
 type DataBank struct {
-	ID               int64  `gorm:"primary_key"`
+	ID               int32  `gorm:"primary_key"`
 	Name             string `sql:"size:32"`
 	AccessionNumbers []*AccessionNumber
-	ArticleID        int64
+	ArticleID        int32
 }
 
 type AccessionNumber struct {
-	ID         int64  `gorm:"primary_key"`
+	ID         int32  `gorm:"primary_key"`
 	Number     string `sql:"size:32"`
-	DataBankID int64
+	DataBankID int32
 }
 
 type OtherID struct {
@@ -93,7 +92,7 @@ type MeshDescriptor struct {
 	Type       string `sql:"size:32"`
 	MajorTopic bool
 	Qualifiers []*MeshQualifier
-	ArticleID  int64
+	ArticleID  int
 	UI         string
 }
 
@@ -117,5 +116,5 @@ type Chemical struct {
 }
 
 type Citation struct {
-	ID int64 `gorm:"primary_key"`
+	ID int `gorm:"primary_key"`
 }
